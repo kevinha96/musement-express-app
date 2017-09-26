@@ -2,10 +2,27 @@ const axios = require('axios')
 const express = require('express')
 const _ = require('lodash')
 
+const creds = require('../client_creds')
+
 var router = express.Router();
 
 // Authentication
-router.get()
+router.get('/auth', function(req, res, next) {
+	var url = 'https://developers.musement.com/api/v3/login'
+
+	axios.get(url, {
+		params: {
+			client_id: creds.client_id,
+			client_secret: creds.secret_id,
+			grant_type: 'client_credentials'
+		}
+	}).then(function(response) {
+		res.status(200).json(response.data)
+	}).catch(function(err) {
+		res.status(400).json({err: 'Invalid api request'})
+	})
+
+})
 
 // Cataloging
 router.get('/catalog/:cat/:id?/:events?', function(req, res, next) {
@@ -66,8 +83,8 @@ router.post('/booking/cart', function(req, res, next) {
 
 })
 
-router.use(function renderUnexpectedError (err, req, res, next) {
-	res.status(500).json({err: 'Unexpected error'})
-})
+// router.use(function renderUnexpectedError (err, req, res, next) {
+// 	res.status(500).json({err: 'Unexpected error'})
+// })
 
 module.exports = router
