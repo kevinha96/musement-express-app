@@ -1,0 +1,26 @@
+{
+  "name": "musement-express-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "client_creds.js",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "express": "^4.15.5",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinha96/musement-express-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevinha96/musement-express-app/issues"
+  },
+  "homepage": "https://github.com/kevinha96/musement-express-app#readme"
+}
