@@ -1,6 +1,7 @@
 const express = require('express')
-
 const app = express()
+
+const ex = require('./run')
 
 /*app.get('/', function(req, res) {
 	res.send('Hello World!')
@@ -16,4 +17,6 @@ app.use('/api/booking', function (req, res, next) {
 
 app.listen(3000, function() {
 	console.log('App now running')
+
+	// var newApp = new ex()
 })

@@ -4,6 +4,7 @@ const _ = require('lodash')
 const config = require('./request_config')
 
 const creds = require('../client_creds')
+var axreq= require('./customAxios')
 
 var router = express.Router();
 
@@ -11,45 +12,45 @@ var router = express.Router();
 var postData = {
 	tickets: [
 		{
+			metadata: {},
 			product: {
-				id: 275106037
-			},
-			quantity: 1
-		}
-	]
-}
-// Ex add customer
-var custData = {
-	customer: {
-		email: "guest136a@fakemail.com",
-		firstname: "Guest136a",
-		lastname: "surname136a",
-		country: {
-			id: 123
-		}
-	}
-}
-var replaceCartData = {
-	tickets: [
-		{
-			product: {
-				id: 275106037
+				id: 53555979
 			},
 			quantity: 1
 		}
 	],
 	customer: {
-		email: "guest136a@fakemail.com",
-		firstname: "Guest136a",
-		lastname: "surname136a",
+		email: "no_uuid_test_123@musement.com",
+		firstname: "Mario",
+		lastname: "Rossi",
 		country: {
-			id: 123
+			id: 82
+		}
+	}
+}
+// Ex add customer
+var custData = {
+	customer: {
+		email: "no_uuid_test_123@musement.com",
+		firstname: "Mario",
+		lastname: "Rossi",
+		country: {
+			id: 82
 		}
 	}
 }
 // Ex create order for cart
-var cartData = {
-	cart_id: '74686cc-74e0-4b78-b421-d3a03dc5cc84'
+function cartData(id) {
+	return {
+		cart_uuid: id
+	}
+}
+// Ex payment data for stripe
+function paymentData(id) {
+	return {
+		order_uuid: id,
+		stripe_token: "tok_visa"
+	}
 }
 
 // Show available dates to book
@@ -59,72 +60,43 @@ router.get('/:eventId/dates', function(req, res, next) {
 
 	var url = 'events/' + req.params.eventId + '/dates?' + date_from + date_to
 
-	axios.request(config.GET_CONFIG('catalog', url)).then(function(response) {
-		res.status(200).json(response.data)
-	}).catch(function(err) {
-		res.status(400).json({err: 'Invalid api request'})
-	})
+	axreq(config.GET_CONFIG('catalog', url), req, res, next)
 })
 
 // Get information about tickets on particular day
 router.get('/:eventId/schedule/:eventDate', function(req, res, next) {
 	var url = 'events/' + req.params.eventId + '/schedule/' + req.params.eventDate
 
-	axios.request(config.GET_CONFIG('catalog', url)).then(function(response) {
-		res.status(200).json(response.data)
-	}).catch(function(err) {
-		res.status(400).json({err: 'Invalid api request'})
-	})
+	axreq(config.GET_CONFIG('catalog', url), req, res, next)
 })
 
 // Create new cart (requires authentication)
 router.post('/cart', function(req, res, next) {
-	axios.request(config.POST_CONFIG('carts', postData)).then(function(response) {
-		res.send(response.data)
-	}).catch(function(err) {
-		console.log(err)
-		res.status(400).json({err: 'Invalid api request'})
-	})
+	axreq(config.POST_CONFIG('carts', postData), req, res, next)
 })
 
 // Add info to cart (customer/ more tickets)
 router.patch('/cart/:cartId', function(req, res, next) {
-	axios.request(config.PATCH_CONFIG('carts/' + req.params.cartId, custData)).then(function(response) {
-		res.send(response.data)
-	}).catch(function(err) {
-		console.log(err)
-		res.status(400).json({err: 'Invalid api request'})
-	})
+	axreq(config.PATCH_CONFIG('carts/' + req.params.cartId, custData), req, res, next)
 })
 
 // Get cart information
 router.get('/cart/:cartId', function(req, res, next) {
-	axios.request(config.GET_CONFIG('authorized', 'carts/' + req.params.cartId)).then(function(response) {
-		res.send(response.data)
-	}).catch(function(err) {
-		console.log(err)
-		res.status(400).json({err: 'Invalid api request'})
-	})
+	axreq(config.GET_CONFIG('authorized', 'carts/' + req.params.cartId), req, res, next)
 })
 
 // Replace all the info in the cart
 router.put('/cart/:cartId', function(req, res, next) {
-	axios.request(config.PUT_CONFIG('carts/' + req.params.cartId, replaceCartData)).then(function(response) {
-		res.send(response.data)
-	}).catch(function(err) {
-		console.log(err)
-		res.status(400).json({err: 'Invalid api request'})
-	})
+	axreq(config.PUT_CONFIG('carts/' + req.params.cartId, postData), req, res, next)
 })
 
 // Create the order (Doesn't work but there is also an error on the webpage)
-router.post('/order', function(req, res, next) {
-	axios.request(config.POST_CONFIG('orders', cartData)).then(function(response) {
-		res.send(response.data)
-	}).catch(function(err) {
-		console.log(JSON.stringify(err.response.data))
-		res.status(400).json({err: 'Invalid api request'})
-	})
+router.post('/order/:cartId', function(req, res, next) {
+	axreq(config.POST_CONFIG('orders', cartData(req.params.cartId)), req, res, next)
+})
+
+router.post('/order/:orderId/payment', function(req, res, next) {
+	axreq(config.POST_CONFIG('payments/stripe/payment', paymentData(req.params.orderId)), req, res, next)
 })
 
 router.use(function renderUnexpectedError (err, req, res, next) {

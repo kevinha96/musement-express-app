@@ -6,7 +6,8 @@
   "dependencies": {
     "axios": "^0.16.2",
     "express": "^4.15.5",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "prompt": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {

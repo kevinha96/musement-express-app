@@ -1,7 +1,7 @@
 const creds = require('../client_creds')
 
 const baseURL = 'https://developers.musement.com/api/v3/'
-const authToken = 'MGU2M2M5ZGFjZTk0NTkyZjQ5OWMwYWY1YTllZDkxZjI3OTMzNjYwMTg2ZjdlYTg2MGU0NGJjM2QwNzc5YTQyZQ'
+const authToken = 'OWE4MzExMjZjZTViYTY1YjI1MDY3MDQ2YTZhNTAwMDI2OWRlYmJiODFhNDUzYzg0OWVkNTA1Njg0MGRhODI2ZQ'
 const authHeader = 'Bearer ' + authToken
 
 module.exports = {
@@ -36,7 +36,8 @@ module.exports = {
 			method: 'post',
 			url: baseURL + url,
 			headers: {
-				Authorization: authHeader
+				Authorization: authHeader,
+				"X-Musement-Version": "3.2.0"
 			},
 			data: data
 		}
