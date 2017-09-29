@@ -11,37 +11,34 @@ export const AppContext = {
 
 		this.axiosClient.doAuthorization()
 			.then((res) => {
-				//console.log('Auth Status: ' + res)
+				console.log('Authorized!!!!')
+
+				// this.musementClient.searchEventsByKeyword('water', 4).then(res => {
+				// 	console.log(res)
+				// })
+
+				// this.musementClient.showDatesForEvent('07207c09-ce18-4587-9129-1471ba068b3c', '2017-10-06', '2017-10-10').then(res => {
+				// 	console.log(res)
+				// })
+
+				// this.musementClient.getTicketInfo('07207c09-ce18-4587-9129-1471ba068b3c', '2017-10-06').then(res => {
+				// 	console.log(res)
+				// })
+
+				// this.musementClient.createCart([{product_id: 53555988, quantity: 1}], {email: "no_uuid_test_123@musement.com", firstname: "Mario", lastname: "Rossi", country: {id: 82}}).then((res) => {
+				// 	console.log('create cart ' + res)
+				// })
+
+				// this.musementClient.createOrder('7a0da68a-bbe9-47a7-963d-f4ec94e8fb03').then(res => {
+				// 	console.log(res)
+				// })
+
+				// this.musementClient.payWithStripeToken('e2f678ea-e570-4c92-836f-f872de488ceb', 'tok_visa').then(res => {
+				// 	console.log(res)
+				// })
 			})
 			.catch(console.error)
 
-		//const eventDates = AppContext.getEventDates('0f5d1163-2046-11e7-9cc9-06a7e332783f', {})
 
-		//this.getEventDates('0f5d1163-2046-11e7-9cc9-06a7e332783f', {})
-
-		/**************THIS WORKS****************/
-		// var headers = { Authorization: 'asdfaeewv'}
-		// var params = { q: 'aevw', city: 3}
-		// console.log({params, headers})
-		/**************THIS WORKS****************/
-
-		this.musementClient.searchEventsByKeyword('water', 4).then(res => {
-			_.map(res.data, function(obj) {
-				console.log(_.pick(obj, 'title'))
-			})
-		})
-
-		/*this.musementClient.showDatesForEvent({eventId: '0f5d1163-2046-11e7-9cc9-06a7e332783f'},{date_from: '2017-10-01', date_to: '2017-10-10'}).then(res => {
-			console.log('worked')
-		})*/
 	}
-
-	// async getEventDates(eventId, query) {
-	// 	const result = await this.musementClient.showDatesForEvent({ eventId },{})
-	// 	console.log('function 1')
-	// },
-
-
-
-
 }
