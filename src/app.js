@@ -1,7 +1,11 @@
-const express = require('express')
+import express from 'express'
+import {AppContext} from './AppContext'
+
 const app = express()
 
-const ex = require('./run')
+AppContext.mountComponents()
+
+// const ex = require('./run')
 
 /*app.get('/', function(req, res) {
 	res.send('Hello World!')

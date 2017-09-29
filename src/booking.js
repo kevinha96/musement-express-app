@@ -1,3 +1,5 @@
+import {AppContext} from './AppContext'
+
 const axios = require('axios')
 const express = require('express')
 const _ = require('lodash')
@@ -7,6 +9,8 @@ const creds = require('../client_creds')
 var axreq= require('./customAxios')
 
 var router = express.Router();
+
+const musementClient = AppContext.musementClient
 
 // Ex add ticket
 var postData = {
@@ -55,10 +59,14 @@ function paymentData(id) {
 
 // Show available dates to book
 router.get('/:eventId/dates', function(req, res, next) {
-	var date_from = (req.query.date_from ? "date_from=" + req.query.date_from : "")
-	var date_to = (req.query.date_to ? "&date_to=" + req.query.date_to : "")
 
-	var url = 'events/' + req.params.eventId + '/dates?' + date_from + date_to
+	// var date_from = (req.query.date_from ? "date_from=" + req.query.date_from : "")
+	// var date_to = (req.query.date_to ? "&date_to=" + req.query.date_to : "")
+	//
+	// var url = 'events/' + req.params.eventId + '/dates?' + date_from + date_to
+
+	const {params, query} = req
+	const url = musementClient.showDatesForEvent(params, query)
 
 	axreq(config.GET_CONFIG('catalog', url), req, res, next)
 })
