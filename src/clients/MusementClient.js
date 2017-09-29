@@ -4,11 +4,14 @@ import _ from 'lodash'
 export class MusementClient {
 
 	constructor(axiosClient) {
+
 		this.axiosClient = axiosClient
 	}
 
 	// Search events in the city by keyword
+
 	async searchEventsByKeyword(keyword, cityCode) {
+
 		const url = 'events/search-extended'
 		var params = { q: keyword, city: cityCode}
 
@@ -106,6 +109,7 @@ export class MusementClient {
 	}
 
 	async payWithStripeToken(order_uuid, stripe_token) {
+
 		const url = 'payments/stripe/payment'
 
 		var data = {order_uuid: order_uuid, stripe_token: stripe_token}
